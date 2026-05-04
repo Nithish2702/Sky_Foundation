@@ -17,10 +17,20 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production-2024'
     
     # Database configuration
-    # Render provides DATABASE_URL, but SQLAlchemy needs postgresql:// not postgres://
+    # Render provides DATABASE_URL
+    # psycopg3 uses postgresql:// (not postgres://)
     database_url = os.environ.get('DATABASE_URL') or 'sqlite:///qatar_foundation.db'
+    
+    # Convert postgres:// to postgresql:// for SQLAlchemy
     if database_url.startswith('postgres://'):
         database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    
+    # For psycopg3, we need to use postgresql+psycopg if using PostgreSQL
+    if database_url.startswith('postgresql://') and 'sqlite' not in database_url:
+        # Check if it already has a driver specified
+        if '+' not in database_url.split('://')[0]:
+            database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
+    
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
