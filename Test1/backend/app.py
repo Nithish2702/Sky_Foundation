@@ -223,7 +223,8 @@ def forgot_password():
             
             # In production, send email here
             # For now, log the reset link
-            reset_link = f"http://localhost:5000/reset-password?token={token}"
+            base_url = os.environ.get('FRONTEND_URL', 'http://localhost:8000')
+            reset_link = f"{base_url}/reset-password?token={token}"
             print(f"Password reset link for {email}: {reset_link}")
         
         # Always return success message
