@@ -3,10 +3,18 @@
  * Connects frontend to Flask backend
  */
 
-// Use environment variable for production, fallback to localhost for development
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api'
-    : 'https://your-backend-url.onrender.com/api';  // Update this after deploying backend
+// Automatically detect environment and use appropriate API URL
+const API_BASE_URL = (() => {
+    const hostname = window.location.hostname;
+    
+    // Local development
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:5000/api';
+    }
+    
+    // Production - Your Render backend URL
+    return 'https://sky-foundation.onrender.com/api';
+})();
 
 // Helper function to make API requests
 async function apiRequest(endpoint, options = {}) {
