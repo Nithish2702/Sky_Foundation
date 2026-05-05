@@ -180,14 +180,19 @@ def login():
         else:
             session.permanent = False
         
-        return jsonify({
+        response = jsonify({
             'message': 'Login successful',
             'admin': {
                 'id': admin.id,
                 'full_name': admin.full_name,
                 'email': admin.email
             }
-        }), 200
+        })
+        
+        # Explicitly set CORS headers for credentials
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        
+        return response, 200
         
     except Exception as e:
         return jsonify({'error': 'An error occurred during login'}), 500
