@@ -46,6 +46,7 @@ class Config:
         SESSION_COOKIE_SECURE = True  # HTTPS only in production
         SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access
         SESSION_COOKIE_SAMESITE = 'None'  # Allow cross-origin with credentials
+        SESSION_COOKIE_DOMAIN = None  # Don't restrict domain
     else:
         SESSION_COOKIE_SECURE = False
         SESSION_COOKIE_HTTPONLY = False
